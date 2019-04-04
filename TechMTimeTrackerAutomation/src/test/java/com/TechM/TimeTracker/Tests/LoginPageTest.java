@@ -5,13 +5,15 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.techm.timetracker.base.TestBase;
+import com.techm.timetracker.pages.HomePage;
 import com.techm.timetracker.pages.LoginPage;
 
-public class LoginPageTests extends TestBase{
+public class LoginPageTest extends TestBase{
 
 	LoginPage login; 
+	HomePage homePage;
 	
-	public LoginPageTests()
+	public LoginPageTest()
 	{
 		super();
 	}
@@ -26,14 +28,15 @@ public class LoginPageTests extends TestBase{
 	@Test
 	public void loginTest()
 	{
-		login.login(prop.getProperty("username"), "password");
-		System.out.println("Login success");
+		homePage =  login.login(prop.getProperty("username"), "password");
+		
 	}
 	
 	@AfterTest
 	public void tearDown()
 	{
-		driver.close();
+		System.out.println("Login success");
+		//driver.close();
 	}
 	
 }

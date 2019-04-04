@@ -28,11 +28,12 @@ public class LoginPage extends TestBase {
 //	driver.findElement(By.xpath("//*[@name='txtPwd']")).sendKeys("Password@666");
 //	driver.findElement(By.id("btnSubmit")).click();
 	
-	public void login(String id, String pwd )
+	public HomePage login(String id, String pwd )
 	{
 		userID.sendKeys(id);
 		userPwd.sendKeys(pwd);
 		loginBtn.click();
+		return new HomePage();
 	}
 	
 	
