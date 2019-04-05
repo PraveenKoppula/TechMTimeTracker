@@ -32,6 +32,12 @@ public class HomePageTest extends TestBase{
 	{
 		tsPage = homePage.enterToTSPage();		
 	}
+
+	@Test
+	public void chekLogo()
+	{
+		System.out.println("logo checked");
+	}
 	
 	@AfterTest
 	public void teardown()
