@@ -38,6 +38,7 @@ public class TSPageTest extends TestBase{
 	@AfterTest
 	public void teardown()
 	{
-		driver.quit();
+    System.out.println("testing success");
+	  driver.quit();
 	}
 }
