@@ -27,13 +27,13 @@ public class HomePageTest extends TestBase{
 		homePage =  loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
 	}
 	
-	@Test
+	@Test (priority=1)
 	public void NavigateToTSPage()
 	{
 		tsPage = homePage.enterToTSPage();		
 	}
 
-	@Test
+	@Test (priority=2)
 	public void chekLogo()
 	{
 		System.out.println("logo checked");
