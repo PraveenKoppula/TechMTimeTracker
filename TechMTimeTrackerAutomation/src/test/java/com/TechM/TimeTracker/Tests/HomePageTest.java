@@ -1,7 +1,5 @@
 package com.TechM.TimeTracker.Tests;
 
-import static org.testng.Assert.assertEquals;
-
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -9,13 +7,14 @@ import org.testng.annotations.Test;
 import com.techm.timetracker.base.TestBase;
 import com.techm.timetracker.pages.HomePage;
 import com.techm.timetracker.pages.LoginPage;
+import com.techm.timetracker.pages.TimeSheetPage;
 
-public class LoginPageTest extends TestBase{
-
-	LoginPage loginPage; 
+public class HomePageTest extends TestBase{
+	LoginPage loginPage;
 	HomePage homePage;
+	TimeSheetPage tsPage; 
 	
-	public LoginPageTest()
+	public HomePageTest()
 	{
 		super();
 	}
@@ -25,20 +24,18 @@ public class LoginPageTest extends TestBase{
 	{
 		initialization();
 		loginPage = new LoginPage();
+		homePage =  loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
 	}
 	
 	@Test
-	public void loginTest()
+	public void NavigateToTSPage()
 	{
-		homePage =  loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
-		assertEquals(homePage.checkIfFillTSImagePresent(),true,"Fill TimeSheet Not displayed");
+		tsPage = homePage.enterToTSPage();		
 	}
 	
 	@AfterTest
-	public void tearDown()
+	public void teardown()
 	{
-		System.out.println("Login success");
 		driver.quit();
 	}
-	
 }
