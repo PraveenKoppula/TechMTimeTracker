@@ -28,13 +28,13 @@ public class HomePageTest extends TestBase{
 	}
 	
 	@Test (priority=1)
-	public void NavigateToTSPage()
+	public void navigateToTSPageTest()
 	{
 		tsPage = homePage.enterToTSPage();		
 	}
 
 	@Test (priority=2)
-	public void chekLogo()
+	public void checkLogoTest()
 	{
 		System.out.println("logo checked");
 	}
