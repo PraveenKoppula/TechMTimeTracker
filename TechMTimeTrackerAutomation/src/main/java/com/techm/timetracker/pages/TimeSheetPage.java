@@ -20,21 +20,27 @@ public class TimeSheetPage extends TestBase {
 	
 	@FindBy(id="ddlWeek")
 	WebElement WeekCombo;
-	
+
+
 
 //	Select s = new Select(driver.findElement(By.id("ddlWeek")));
 //	List<WebElement> weeksList = s.getOptions();
 //	int presentWeekNumber = weeksList.size()-1;
 //	System.out.println("Present week number: " + presentWeekNumber);
-	
-	
-	public List<WebElement> ListOfWeeks()
+
+	Select s;
+
+	public List<WebElement> listOfWeeks()
 	{
-		Select s = new Select(WeekCombo);
+		s = new Select(WeekCombo);
 		List<WebElement> weeksList = s.getOptions();
 		
 		return weeksList;
 	}
-	
-	
+
+	public void selectRequiredWeek(int weekNumber)
+	{
+			s.selectByIndex(weekNumber);
+	}
+
 }

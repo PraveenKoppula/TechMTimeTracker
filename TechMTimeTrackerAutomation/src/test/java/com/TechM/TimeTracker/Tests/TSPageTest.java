@@ -30,11 +30,18 @@ public class TSPageTest extends TestBase{
 	@Test (priority=1)
 	public void selectPresentWeek()
 	{
-		int weeksPassed = tsPage.ListOfWeeks().size();
-		String presentWeekRange = tsPage.ListOfWeeks().get(weeksPassed-1).getText();
+		int weeksPassed = tsPage.listOfWeeks().size();
+		String presentWeekRange = tsPage.listOfWeeks().get(weeksPassed-1).getText();
 		System.out.println("Present week range: " + presentWeekRange);
 	}
-	
+
+	@Test (priority=2)
+	public void selectRequiredWeek()
+	{
+		tsPage.selectRequiredWeek(6);
+	}
+
+
 	@AfterTest
 	public void teardown()
 	{
