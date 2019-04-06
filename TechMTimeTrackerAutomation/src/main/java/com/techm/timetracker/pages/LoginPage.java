@@ -22,11 +22,8 @@ public class LoginPage extends TestBase {
 	WebElement userPwd;
 	
 	@FindBy(id="btnSubmit")
-	WebElement loginBtn;
+	WebElement loginBtn;	
 	
-//	driver.findElement(By.xpath("//*[@name='txtUser']")).sendKeys("kp42371");
-//	driver.findElement(By.xpath("//*[@name='txtPwd']")).sendKeys("Password@666");
-//	driver.findElement(By.id("btnSubmit")).click();
 	
 	public HomePage login(String id, String pwd )
 	{
