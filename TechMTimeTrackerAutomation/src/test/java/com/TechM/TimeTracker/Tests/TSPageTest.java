@@ -67,7 +67,7 @@ public class TSPageTest extends TestBase{
 		{
 			if(tsPage.bTimesheetsFilledSelectedForWeek())
 			{
-				System.out.println("Timesheets filled for week" + TestUtils.REQUIRED_WEEK_NUMBER);
+				System.out.println("Timesheets filled for week" + i);
 				tsPage.clickNextWeek();				
 			}
 			else
