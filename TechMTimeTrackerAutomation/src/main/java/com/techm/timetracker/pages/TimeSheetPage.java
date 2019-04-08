@@ -1,6 +1,9 @@
 package com.techm.timetracker.pages;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -61,7 +64,11 @@ public class TimeSheetPage extends TestBase {
 
 	public void clickNextWeek()
 	{
-		nextWeekBtn.click();
+		if(nextWeekBtn.isEnabled())
+		{
+			System.out.println("Next week button enabled");
+			nextWeekBtn.click();
+		}
 	}
 	
 	public boolean bTimesheetsFilledSelectedForWeek()
@@ -98,50 +105,106 @@ public class TimeSheetPage extends TestBase {
 		
 	}
 	
+	public boolean isItCurrentDay(int dayNumber)
+	{
+		//lblDay0
+		String dateToBeClicked = driver.findElement(By.id("lblDay"+dayNumber+"")).getText();
+		System.out.println("Text of Date to be clicked: " + dateToBeClicked);		
+		String dateFromUI= dateToBeClicked.substring(0,10);
+		System.out.println(dateFromUI);
+		
+		Calendar cal = Calendar.getInstance();		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");		
+		//Setting the time zone to IST
+		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("IST"));
+		//Formatting IST Date&Time as required
+		System.out.println("Actual date in IST with formatting: " + simpleDateFormat.format(cal.getTime()));
+		
+		if(dateFromUI.equals(simpleDateFormat.format(cal.getTime())))
+		{
+			return true;
+		}
+		else {
+			return false;	
+		}
+	}
+	
+	
 	//Enters time data for a day
 	public void enterTimeForADay(int i) throws InterruptedException {
+		//boolean bFutureDateClicked = false;
 		driver.findElement(By.id("lblDay"+i+"")).click();
 		System.out.println("DAY-"+i+" CLICKED ");
 
-		Thread.sleep(3000);
-		driver.findElement(By.id("lnkAddDay"+i+"")).click();
-		 Thread.sleep(3000);
-		 
-		s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPANPA")));
-		s.selectByIndex(1); Thread.sleep(3000);
-
-		s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlProject")));
-		s.selectByIndex(1); Thread.sleep(3000);
-
-		s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPayCode")));
-		s.selectByIndex(2); Thread.sleep(3000);
-
-		driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignIn")).sendKeys("08:00");
-		driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignOut")).sendKeys("12:00");
-		Thread.sleep(3000);
+//		if (!submitBtnPresent(i))
+//		{
+//			System.out.println("All timesheets filled. Have a great day !!! ");
+//			bFutureDateClicked = true;
+//		}
+//		else
+//		{		
+			Thread.sleep(3000);
+			driver.findElement(By.id("lnkAddDay"+i+"")).click();
+			 Thread.sleep(3000);
+			 
+			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPANPA")));
+			s.selectByIndex(1); Thread.sleep(3000);
+	
+			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlProject")));
+			s.selectByIndex(1); Thread.sleep(3000);
+	
+			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPayCode")));
+			s.selectByIndex(2); Thread.sleep(3000);
+	
+			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignIn")).sendKeys("08:00");
+			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignOut")).sendKeys("12:00");
+			Thread.sleep(3000);
+			
+			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPANPA")));
+			s.selectByIndex(1); Thread.sleep(3000);
+	
+			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlProject")));
+			s.selectByIndex(1); Thread.sleep(3000);
+	
+			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPayCode")));
+			s.selectByIndex(2); Thread.sleep(3000);
+	
+			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignIn")).sendKeys("13:00");
+			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignOut")).sendKeys("17:00");
+	
+			driver.findElement(By.id("txtMBSignIn"+i+"")).sendKeys("12:00");
+			driver.findElement(By.id("txtMBSignOut"+i+"")).sendKeys("13:00");
+			driver.findElement(By.id("lnkSubmit"+i+"")).click();
+			
+			driver.switchTo().alert().accept(); Thread.sleep(2000);
+			driver.switchTo().alert().accept(); Thread.sleep(5000);
+		//}
 		
-		s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPANPA")));
-		s.selectByIndex(1); Thread.sleep(3000);
-
-		s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlProject")));
-		s.selectByIndex(1); Thread.sleep(3000);
-
-		s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPayCode")));
-		s.selectByIndex(2); Thread.sleep(3000);
-
-		driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignIn")).sendKeys("13:00");
-		driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignOut")).sendKeys("17:00");
-
-		driver.findElement(By.id("txtMBSignIn"+i+"")).sendKeys("12:00");
-		driver.findElement(By.id("txtMBSignOut"+i+"")).sendKeys("13:00");
-		driver.findElement(By.id("lnkSubmit"+i+"")).click();
-		
-		driver.switchTo().alert().accept(); Thread.sleep(2000);
-		driver.switchTo().alert().accept(); Thread.sleep(5000);
-		
-		System.out.println(tsSubmittedForTuesday.getText());
+		//return bFutureDateClicked;
 	}
 
+	//Returns true if submit button is present for a day
+	public boolean submitBtnPresent(int dayNumber)
+	{
+		if(driver.findElements(By.id("lnkSubmit"+dayNumber+"")).size() > 0){
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+
+	//Returns true if submitted successfully message displayed after submitting the time
+	public boolean submittedsucccessfullyDisplayed(int dayNumber)
+	{	
+		if(driver.findElements(By.id("lblMsgDay"+dayNumber+"")).size() > 0 ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	
 	public void signOut()
 	{
 		employeeName.click();
