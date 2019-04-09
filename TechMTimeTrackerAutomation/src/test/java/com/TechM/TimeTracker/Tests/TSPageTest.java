@@ -97,7 +97,7 @@ public class TSPageTest extends TestBase{
 		}
 	}
 	
-	@Test (priority=3, enabled = true)
+	@Test (priority=3, enabled = false)
 	public void checkAndFillTSFromASpecificWeekTest() throws InterruptedException
 	{
 		int currentWeekNumber = tsPage.listOfWeeks().size()-1;

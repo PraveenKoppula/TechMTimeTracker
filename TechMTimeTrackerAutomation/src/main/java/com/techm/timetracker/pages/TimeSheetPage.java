@@ -83,7 +83,7 @@ public class TimeSheetPage extends TestBase {
 	//Check whether timesheet filled for a day - if it says 9hrs =filled or else not filled
 	public boolean bDayTimesheetFilled(int dayNumber)
 	{
-		if(driver.findElement(By.id("lblDay"+dayNumber+"_Total")).getText().equals("09.00"))
+		if(driver.findElement(By.id("lblDay"+dayNumber+"_Total")).getText().equals("08.30"))
 		{
 			return true;
 		}
@@ -96,7 +96,7 @@ public class TimeSheetPage extends TestBase {
 	//Checks whether timesheet is filled for a day and calls enterTimeForADay() method to fill data
 	public void checkAndFillTimesheets(int dayNumber) throws InterruptedException
 	{
-		if(driver.findElement(By.id("lblDay"+dayNumber+"_Total")).getText().equals("09.00")) {
+		if(bDayTimesheetFilled(dayNumber)) {
 			System.out.println("DAY"+dayNumber+" Timesheet already filled.");			
 		}
 		else {
@@ -129,6 +129,31 @@ public class TimeSheetPage extends TestBase {
 		}
 	}
 	
+	public void fillTSForASession(int dayNumber, String session) throws InterruptedException
+	{
+		String sessionCode = null;
+		if(session.equals("Morning")) {
+			sessionCode = "ct102";
+		}else if(session.equals("Noon")) {
+			sessionCode = "ct103";
+		}
+		
+		Select s;
+		
+		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlPANPA")));
+		s.selectByIndex(1); Thread.sleep(3000);
+
+		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlProject")));
+		s.selectByIndex(1); Thread.sleep(3000);
+
+		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlPayCode")));
+		s.selectByIndex(2); Thread.sleep(3000);
+
+		driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_txtSignIn")).sendKeys("08:00");
+		driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_txtSignOut")).sendKeys("12:00");
+		Thread.sleep(3000);
+	}
+	
 	
 	//Enters time data for a day
 	public void enterTimeForADay(int i) throws InterruptedException {
@@ -145,41 +170,41 @@ public class TimeSheetPage extends TestBase {
 //		{		
 			Thread.sleep(3000);
 			driver.findElement(By.id("lnkAddDay"+i+"")).click();
-			 Thread.sleep(3000);
-			 
-			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPANPA")));
-			s.selectByIndex(1); Thread.sleep(3000);
-	
-			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlProject")));
-			s.selectByIndex(1); Thread.sleep(3000);
-	
-			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPayCode")));
-			s.selectByIndex(2); Thread.sleep(3000);
-	
-			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignIn")).sendKeys("08:00");
-			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignOut")).sendKeys("12:00");
 			Thread.sleep(3000);
+			 
+			fillTSForASession(i, "Morning");
+			fillTSForASession(i, "Noon");
+			 
+			 
+//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPANPA")));
+//			s.selectByIndex(1); Thread.sleep(3000);
+//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlProject")));
+//			s.selectByIndex(1); Thread.sleep(3000);
+//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPayCode")));
+//			s.selectByIndex(2); Thread.sleep(3000);	
+//			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignIn")).sendKeys("08:00");
+//			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignOut")).sendKeys("12:00");
+//			Thread.sleep(3000);
 			
-			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPANPA")));
-			s.selectByIndex(1); Thread.sleep(3000);
-	
-			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlProject")));
-			s.selectByIndex(1); Thread.sleep(3000);
-	
-			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPayCode")));
-			s.selectByIndex(2); Thread.sleep(3000);
-	
-			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignIn")).sendKeys("13:00");
-			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignOut")).sendKeys("17:00");
+//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPANPA")));
+//			s.selectByIndex(1); Thread.sleep(3000);	
+//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlProject")));
+//			s.selectByIndex(1); Thread.sleep(3000);
+//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPayCode")));
+//			s.selectByIndex(2); Thread.sleep(3000);
+//			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignIn")).sendKeys("13:00");
+//			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignOut")).sendKeys("17:00");
 	
 			driver.findElement(By.id("txtMBSignIn"+i+"")).sendKeys("12:00");
 			driver.findElement(By.id("txtMBSignOut"+i+"")).sendKeys("13:00");
 			driver.findElement(By.id("lnkSubmit"+i+"")).click();
-			
+				
 			driver.switchTo().alert().accept(); Thread.sleep(2000);
 			driver.switchTo().alert().accept(); Thread.sleep(5000);
+			
 		//}
-		
+	
+			
 		//return bFutureDateClicked;
 	}
 
