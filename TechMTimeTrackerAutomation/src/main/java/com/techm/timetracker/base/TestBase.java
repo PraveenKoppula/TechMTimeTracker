@@ -12,20 +12,24 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import com.techm.timetracker.utils.TestUtils;
-import com.techm.timetracker.utils.WebEventListener;
+//import com.techm.timetracker.utils.WebEventListener;
 
 public class TestBase {
 
 	public static Properties prop;
 	public static WebDriver driver;
 	public  static EventFiringWebDriver e_driver;
-	public static WebEventListener eventListener;
+//	public static WebEventListener eventListener;
 	
 	public TestBase() {
 		try {
 			prop = new Properties();
-			 FileInputStream ip = new FileInputStream(System.getProperty("user.dir")
-			 		+ "\\src\\main\\java\\com\\techm\\timetracker\\config\\config.properties");
+//			 FileInputStream ip = new FileInputStream(System.getProperty("user.dir")
+//			 		+ "\\src\\main\\java\\com\\techm\\timetracker\\config\\config.properties");
+
+			FileInputStream ip = new FileInputStream("/Users/skallu/IdeaProjects/TechMTimeTracker/TechMTimeTrackerAutomation/src/main/java/com/techm/timetracker/config/config.properties");
+
+
 //			FileInputStream ip = new FileInputStream("/usr/local/google/home/praveenkumark/My Projects DO NOT DELETE/"
 //					+ "TechMTimesheets/TechMTimeTrackerAutomation/src/main/java/com/techm/timetracker/config/config.properties");
 
@@ -45,7 +49,7 @@ public class TestBase {
 		
 		if(browserName.equals("chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "chromedriver");
 			driver = new ChromeDriver();
 		}
 		else if(browserName.equals("FF")){
@@ -53,11 +57,11 @@ public class TestBase {
 		driver = new FirefoxDriver(); 
 		}
 	
-		e_driver = new EventFiringWebDriver(driver);
+/*		e_driver = new EventFiringWebDriver(driver);
 		// Now create object of EventListerHandler to register it with EventFiringWebDriver
 		eventListener = new WebEventListener();
 		e_driver.register(eventListener);
-		driver = e_driver;
+		driver = e_driver; */
 	
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
