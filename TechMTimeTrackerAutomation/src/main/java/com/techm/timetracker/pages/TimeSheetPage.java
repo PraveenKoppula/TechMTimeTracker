@@ -133,9 +133,9 @@ public class TimeSheetPage extends TestBase {
 	{
 		String sessionCode = null;
 		if(session.equals("Morning")) {
-			sessionCode = "ct102";
+			sessionCode = "ctl02";
 		}else if(session.equals("Noon")) {
-			sessionCode = "ct103";
+			sessionCode = "ctl03";
 		}
 		
 		Select s;
@@ -149,9 +149,14 @@ public class TimeSheetPage extends TestBase {
 		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlPayCode")));
 		s.selectByIndex(2); Thread.sleep(3000);
 
-		driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_txtSignIn")).sendKeys("08:00");
-		driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_txtSignOut")).sendKeys("12:00");
-		Thread.sleep(3000);
+		if(sessionCode.equals("ctl02")) {
+			driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignIn")).sendKeys("08:20");
+			driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignOut")).sendKeys("12:20");
+		}else{
+			driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignIn")).sendKeys("13:20");
+			driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignOut")).sendKeys("17:20");
+		}
+			Thread.sleep(3000);
 	}
 	
 	
