@@ -129,16 +129,22 @@ public class TimeSheetPage extends TestBase {
 		}
 	}
 	
+	public void clickDayToExpand(int dayNumber)
+	{
+		driver.findElement(By.id("lblDay"+dayNumber+"")).click();
+		System.out.println("DAY-"+dayNumber+" CLICKED ");
+	}
+	
 	public void fillTSForASession(int dayNumber, String session) throws InterruptedException
 	{
 		String sessionCode = null;
+		String loginTime = null;
+		String logoutTime = null;
 		if(session.equals("Morning")) {
-			sessionCode = "ctl02";
+			sessionCode = "ctl02";	loginTime = "08.00";	logoutTime = "12.00";
 		}else if(session.equals("Noon")) {
-			sessionCode = "ctl03";
+			sessionCode = "ctl03";	loginTime = "12.30";	logoutTime = "16.30";
 		}
-		
-		Select s;
 		
 		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlPANPA")));
 		s.selectByIndex(1); Thread.sleep(3000);
@@ -149,68 +155,32 @@ public class TimeSheetPage extends TestBase {
 		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlPayCode")));
 		s.selectByIndex(2); Thread.sleep(3000);
 
-		if(sessionCode.equals("ctl02")) {
-			driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignIn")).sendKeys("08:20");
-			driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignOut")).sendKeys("12:20");
-		}else{
-			driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignIn")).sendKeys("13:20");
-			driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignOut")).sendKeys("17:20");
-		}
-			Thread.sleep(3000);
+		driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignIn")).sendKeys(loginTime);
+		driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignOut")).sendKeys(logoutTime);
+		Thread.sleep(3000);
+	}
+	
+	public void enterBreakTimeAndSubmit(int dayNumber) throws InterruptedException
+	{
+		String startTime = "12.00";
+		String endTime = "12.30";
+		driver.findElement(By.id("txtMBSignIn"+dayNumber+"")).sendKeys(startTime);
+		driver.findElement(By.id("txtMBSignOut"+dayNumber+"")).sendKeys(endTime);
+		driver.findElement(By.id("lnkSubmit"+dayNumber+"")).click();
+		//Tap OK on Alerts
+		driver.switchTo().alert().accept(); Thread.sleep(2000);
+		driver.switchTo().alert().accept(); Thread.sleep(5000);
 	}
 	
 	
 	//Enters time data for a day
 	public void enterTimeForADay(int i) throws InterruptedException {
-		//boolean bFutureDateClicked = false;
-		driver.findElement(By.id("lblDay"+i+"")).click();
-		System.out.println("DAY-"+i+" CLICKED ");
-
-//		if (!submitBtnPresent(i))
-//		{
-//			System.out.println("All timesheets filled. Have a great day !!! ");
-//			bFutureDateClicked = true;
-//		}
-//		else
-//		{		
-			Thread.sleep(3000);
-			driver.findElement(By.id("lnkAddDay"+i+"")).click();
-			Thread.sleep(3000);
-			 
-			fillTSForASession(i, "Morning");
-			fillTSForASession(i, "Noon");
-			 
-			 
-//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPANPA")));
-//			s.selectByIndex(1); Thread.sleep(3000);
-//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlProject")));
-//			s.selectByIndex(1); Thread.sleep(3000);
-//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_ddlPayCode")));
-//			s.selectByIndex(2); Thread.sleep(3000);	
-//			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignIn")).sendKeys("08:00");
-//			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl02_txtSignOut")).sendKeys("12:00");
-//			Thread.sleep(3000);
-			
-//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPANPA")));
-//			s.selectByIndex(1); Thread.sleep(3000);	
-//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlProject")));
-//			s.selectByIndex(1); Thread.sleep(3000);
-//			s = new Select(driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_ddlPayCode")));
-//			s.selectByIndex(2); Thread.sleep(3000);
-//			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignIn")).sendKeys("13:00");
-//			driver.findElement(By.id("gvTimesheetDay"+i+"_ctl03_txtSignOut")).sendKeys("17:00");
-	
-			driver.findElement(By.id("txtMBSignIn"+i+"")).sendKeys("12:00");
-			driver.findElement(By.id("txtMBSignOut"+i+"")).sendKeys("13:00");
-			driver.findElement(By.id("lnkSubmit"+i+"")).click();
-				
-			driver.switchTo().alert().accept(); Thread.sleep(2000);
-			driver.switchTo().alert().accept(); Thread.sleep(5000);
-			
-		//}
-	
-			
-		//return bFutureDateClicked;
+		driver.findElement(By.id("lnkAddDay"+i+"")).click();
+		Thread.sleep(3000);
+		 
+		fillTSForASession(i, "Morning");
+		fillTSForASession(i, "Noon");
+		enterBreakTimeAndSubmit(i);
 	}
 
 	//Returns true if submit button is present for a day
