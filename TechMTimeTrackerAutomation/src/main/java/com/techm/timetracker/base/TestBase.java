@@ -24,16 +24,18 @@ public class TestBase {
 	public TestBase() {
 		try {
 			prop = new Properties();
-			 FileInputStream ip = new FileInputStream(System.getProperty("user.dir")
-			 		+ "\\src\\main\\java\\com\\techm\\timetracker\\config\\config.properties");
+			FileInputStream ip = null;
 
-//			FileInputStream ip = new FileInputStream("/Users/skallu/IdeaProjects/TechMTimeTracker/TechMTimeTrackerAutomation/src/main/java/com/techm/timetracker/config/config.properties");
+			if(System.getProperty("os.name").contains("Windows"))
+			{
+				System.out.println("OS is Windows");
+				ip = new FileInputStream(System.getProperty("user.dir")
+					+ "\\src\\main\\java\\com\\techm\\timetracker\\config\\config.properties");
+			}else if(System.getProperty("os.name").contains("Linux")) {
+				System.out.println("OS is Linux");
+				ip = new FileInputStream("src/main/java/com/techm/timetracker/config/config.properties");
+			}
 
-
-//			FileInputStream ip = new FileInputStream("/usr/local/google/home/praveenkumark/My Projects DO NOT DELETE/"
-//					+ "TechMTimesheets/TechMTimeTrackerAutomation/src/main/java/com/techm/timetracker/config/config.properties");
-
-			prop.load(ip);
 			prop.load(ip);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -49,8 +51,13 @@ public class TestBase {
 		
 		if(browserName.equals("chrome"))
 		{
-//			System.setProperty("webdriver.chrome.driver", "chromedriver");
-			System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			if(System.getProperty("os.name").contains("Linux")) {
+				System.out.println("OS is Linux");
+				System.setProperty("webdriver.chrome.driver", "chromedriver");
+			}else if(System.getProperty("os.name").contains("Windows")) {
+				System.out.println("OS is Windows");
+				System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+			}
 			driver = new ChromeDriver();
 		}
 		else if(browserName.equals("FF")){
