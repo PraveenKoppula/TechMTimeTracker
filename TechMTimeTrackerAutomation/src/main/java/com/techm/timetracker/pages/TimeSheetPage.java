@@ -1,5 +1,9 @@
 package com.techm.timetracker.pages;
 
+import static com.techm.timetracker.utils.TestUtils.i_projectSelection;
+import static com.techm.timetracker.utils.TestUtils.i_taskSelection;
+import static com.techm.timetracker.utils.TestUtils.i_workSELECTION;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -135,25 +139,25 @@ public class TimeSheetPage extends TestBase {
 		System.out.println("DAY-"+dayNumber+" CLICKED ");
 	}
 	
-	public void fillTSForASession(int dayNumber, String session) throws InterruptedException
+	public void fillTSForASession(int dayNumber, String session, int workSelection, int projectSelection,int taskSelection) throws InterruptedException
 	{
 		String sessionCode = null;
 		String loginTime = null;
 		String logoutTime = null;
 		if(session.equals("Morning")) {
-			sessionCode = "ctl02";	loginTime = "08.00";	logoutTime = "12.00";
+			sessionCode = "ctl02";	loginTime = "09.00";	logoutTime = "13.00";
 		}else if(session.equals("Noon")) {
-			sessionCode = "ctl03";	loginTime = "12.30";	logoutTime = "16.30";
+			sessionCode = "ctl03";	loginTime = "13.30";	logoutTime = "17.30";
 		}
 		
 		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlPANPA")));
-		s.selectByIndex(1); Thread.sleep(3000);
+		s.selectByIndex(workSelection); Thread.sleep(3000);
 
 		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlProject")));
-		s.selectByIndex(1); Thread.sleep(3000);
+		s.selectByIndex(projectSelection); Thread.sleep(3000);
 
 		s = new Select(driver.findElement(By.id("gvTimesheetDay"+dayNumber+"_"+sessionCode+"_ddlPayCode")));
-		s.selectByIndex(2); Thread.sleep(3000);
+		s.selectByIndex(taskSelection); Thread.sleep(3000);
 
 		driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignIn")).sendKeys(loginTime);
 		driver.findElement(By.id("gvTimesheetDay" + dayNumber + "_" + sessionCode + "_txtSignOut")).sendKeys(logoutTime);
@@ -162,8 +166,8 @@ public class TimeSheetPage extends TestBase {
 	
 	public void enterBreakTimeAndSubmit(int dayNumber) throws InterruptedException
 	{
-		String startTime = "12.00";
-		String endTime = "12.30";
+		String startTime = "13.00";
+		String endTime = "13.30";
 		driver.findElement(By.id("txtMBSignIn"+dayNumber+"")).sendKeys(startTime);
 		driver.findElement(By.id("txtMBSignOut"+dayNumber+"")).sendKeys(endTime);
 		driver.findElement(By.id("lnkSubmit"+dayNumber+"")).click();
@@ -175,11 +179,12 @@ public class TimeSheetPage extends TestBase {
 	
 	//Enters time data for a day
 	public void enterTimeForADay(int i) throws InterruptedException {
+		Thread.sleep(3000);
 		driver.findElement(By.id("lnkAddDay"+i+"")).click();
 		Thread.sleep(3000);
 		 
-		fillTSForASession(i, "Morning");
-		fillTSForASession(i, "Noon");
+		fillTSForASession(i, "Morning", i_workSELECTION, i_projectSelection,i_taskSelection );
+		fillTSForASession(i, "Noon", i_workSELECTION, i_projectSelection,i_taskSelection );
 		enterBreakTimeAndSubmit(i);
 	}
 
